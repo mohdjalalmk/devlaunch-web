@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  background-color: #3b4452; /* dark gray */
+  color: #f0f0f0;            /* light text */
+  font-family: sans-serif;
+}
+a {
+  color: #42b983;
+  text-decoration: none;
+}
