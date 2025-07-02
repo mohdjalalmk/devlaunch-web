@@ -1,10 +1,13 @@
 import api from '../api'
 
 // Get all courses
-export async function getAllCourses() {
-  const response = await api.get('/courses')
-  return response.data
+export async function getAllCourses({ search = '', page = 1, limit = 10 } = {}) {
+  const response = await api.get('/courses', {
+    params: { search, page, limit }
+  });
+  return response.data;
 }
+
 
 // Get specific course by id
 export async function getCourseById(courseId) {
@@ -23,5 +26,13 @@ export async function enrollInCourse(courseId) {
 export async function getMyEnrolledCourses() {
   const response = await api.get(`/user/me/courses`)
   return response.data
+}
+
+
+export const getSignedVideoUrl = async (courseId, key) => {
+  const res = await api.get(`/courses/${courseId}/videos/signed-url`, {
+    params: { key }
+  })
+  return res.data // assuming your backend returns { signedUrl: '...' }
 }
 

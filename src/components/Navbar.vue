@@ -45,7 +45,7 @@ const userInitial = computed(() => {
 
 <style scoped>
 .navbar {
-  background-color: #2c2c2c;
+  background-color: #1c1f21;
   display: flex;
   justify-content: space-between;
   align-items: center;
