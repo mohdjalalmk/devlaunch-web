@@ -36,3 +36,13 @@ export const getSignedVideoUrl = async (courseId, key) => {
   return res.data // assuming your backend returns { signedUrl: '...' }
 }
 
+export const updateCourseProgress = async (courseId, videoKey) =>{
+const res=   await api.patch(`/user/me/courses/${courseId}/?videoKey=${videoKey}`);
+return res.data
+
+}
+
+export const getCourseProgress = async (courseId) => {
+  const res = await api.get(`/user/me/courses/${courseId}/progress`);
+  return res.data;
+}; 
