@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginPage from "../pages/LoginPage.vue";
 import HomePage from "../pages/HomePage.vue";
 import { useAuthStore } from "../store/authStore";
-import CourseDetails from '../pages/CourseDetails.vue' // 👈 import
+import CourseDetails from '../pages/CourseDetails.vue' 
 
 const routes = [
   { path: "/", name: "Login", component: LoginPage },
