@@ -9,6 +9,10 @@
       <div v-if="showDropdown" class="dropdown-menu">
         <p class="dropdown-header">Hello, {{ auth.user?.name || 'User' }}</p>
         <hr class="dropdown-divider" />
+        <button class="dropdown-item" @click.stop="goToEnrolled">
+          📚 My Courses
+        </button>
+        <hr class="dropdown-divider" />
         <button class="dropdown-item logout" @click.stop="logout">
           <LogOut class="icon" /> Logout
         </button>
@@ -40,6 +44,10 @@ const logout = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const goToEnrolled = () => {
+  router.push("/enrolled");
 };
 
 const userInitial = computed(() => {
@@ -80,7 +88,7 @@ const userInitial = computed(() => {
 .avatar {
   width: 38px;
   height: 38px;
-  background-color: #3b82f6;   /* themed blue */
+  background-color: #3b82f6;   
   color: white;
   border-radius: 50%;
   display: grid;
