@@ -3,6 +3,7 @@ import LoginPage from "../pages/LoginPage.vue";
 import HomePage from "../pages/HomePage.vue";
 import { useAuthStore } from "../store/authStore";
 import CourseDetails from '../pages/CourseDetails.vue' 
+import EnrolledCourses from "../pages/EnrolledCourses.vue";
 
 const routes = [
   { path: "/", name: "Login", component: LoginPage },
@@ -11,7 +12,13 @@ const routes = [
     path: '/courses/:id',
     name: 'CourseDetails',
     component: CourseDetails
-  }
+  },
+  {
+  path: '/enrolled',
+  name: 'EnrolledCourses',
+  component: EnrolledCourses
+}
+
 ];
 
 const router = createRouter({
