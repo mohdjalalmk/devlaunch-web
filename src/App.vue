@@ -7,7 +7,6 @@
 </script>
 
 <style>
-/* optional global styles */
 body {
   font-family: sans-serif;
   margin: 0;

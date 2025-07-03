@@ -9,7 +9,7 @@
       "
     >
       <v-card
-        class="pa-6 rounded-lg login-card"
+        class="pa-6 rounded-lg signup-card"
         max-width="500"
         elevation="12"
         color="white"
@@ -19,7 +19,7 @@
             class="text-h5 font-weight-semibold"
             :style="{ color: brandColor }"
           >
-            Login to DevLaunch
+            Sign Up for DevLaunch
           </span>
         </v-card-title>
 
@@ -36,7 +36,18 @@
           {{ error }}
         </v-alert>
 
-        <v-form @submit.prevent="handleLogin">
+        <v-form @submit.prevent="handleSignup">
+          <v-text-field
+            v-model="name"
+            label="Name"
+            placeholder="Your Name"
+            :color="brandColor"
+            variant="outlined"
+            density="comfortable"
+            class="mb-4"
+            required
+          ></v-text-field>
+
           <v-text-field
             v-model="email"
             label="Email"
@@ -45,7 +56,7 @@
             :color="brandColor"
             variant="outlined"
             density="comfortable"
-            class="mb-4 small-input"
+            class="mb-4"
             required
           ></v-text-field>
 
@@ -57,7 +68,7 @@
             :color="brandColor"
             variant="outlined"
             density="comfortable"
-            class="mb-4 small-input"
+            class="mb-6"
             required
           ></v-text-field>
 
@@ -70,17 +81,17 @@
               class="mb-4 no-uppercase"
               style="width: 60%; text-transform: none"
             >
-              Login
+              Sign Up
             </v-btn>
 
             <v-btn
               variant="text"
               size="small"
               :style="{ color: brandColor }"
-              @click="router.push('/signup')"
+              @click="router.push('/login')"
             >
               <p class="text-caption no-uppercase">
-                Don't have an account? Sign Up
+                Already have an account? Login
               </p>
             </v-btn>
           </div>
@@ -94,46 +105,40 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/authStore";
-import { loginUser } from "../api/auth";
+import { signupUser } from "../api/auth";
 
+const name = ref("");
 const email = ref("");
 const password = ref("");
+
 const auth = useAuthStore();
 const router = useRouter();
 
 const loading = computed(() => auth.loading);
 const error = computed(() => auth.error);
 
-const brandColor = "#2503a1";
-const handleLogin = async () => {
+const brandColor = "#2503a1"; 
+
+const handleSignup = async () => {
   auth.setLoading(true);
   auth.setError(null);
   try {
-    const response = await loginUser(email.value, password.value);
+    const response = await signupUser(name.value, email.value, password.value);
     auth.setUser(response);
     router.push("/home");
   } catch (err) {
-    auth.setError(err.response.data.message || "Login failed");
+    console.log("error:",err.response.data.message);
+    
+    auth.setError(err.response.data.message || "Signup failed");
   } finally {
     auth.setLoading(false);
   }
 };
-
-const navigateToSignup = () => {
-  router.push("/signup");
-};
 </script>
 
 <style scoped>
-.login-card {
+.signup-card {
   width: 100%;
   font-family: "Inter", sans-serif;
-}
-.small-input .v-field__input {
-  font-size: 13px; /* smaller text */
-}
-
-.small-input input::placeholder {
-  font-size: 12px; /* smaller placeholder */
 }
 </style>

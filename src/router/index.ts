@@ -1,24 +1,38 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginPage from "../pages/LoginPage.vue";
+import SignupPage from "../pages/SignupPage.vue"; // added signup
 import HomePage from "../pages/HomePage.vue";
-import { useAuthStore } from "../store/authStore";
-import CourseDetails from '../pages/CourseDetails.vue' 
+import CourseDetails from "../pages/CourseDetails.vue";
 import EnrolledCourses from "../pages/EnrolledCourses.vue";
 
+import { useAuthStore } from "../store/authStore";
+
 const routes = [
-  { path: "/", name: "Login", component: LoginPage },
-  { path: "/home", name: "Home", component: HomePage },
   {
-    path: '/courses/:id',
-    name: 'CourseDetails',
-    component: CourseDetails
+    path: "/",
+    name: "Login",
+    component: LoginPage,
   },
   {
-  path: '/enrolled',
-  name: 'EnrolledCourses',
-  component: EnrolledCourses
-}
-
+    path: "/signup",
+    name: "Signup",
+    component: SignupPage,
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: HomePage,
+  },
+  {
+    path: "/courses/:id",
+    name: "CourseDetails",
+    component: CourseDetails,
+  },
+  {
+    path: "/enrolled",
+    name: "EnrolledCourses",
+    component: EnrolledCourses,
+  },
 ];
 
 const router = createRouter({
@@ -26,12 +40,16 @@ const router = createRouter({
   routes,
 });
 
+// Global navigation guard
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
-  if (to.name !== "Login" && !auth.token) {
+
+  if (!auth.token && to.name !== "Login" && to.name !== "Signup") {
+    // Not logged in → redirect to login
     next({ name: "Login" });
-  } else if (to.name === "Login" && auth.token) {
-    next({ name: "Home" }); // redirect logged-in user to home
+  } else if (auth.token && (to.name === "Login" || to.name === "Signup")) {
+    // Already logged in → redirect to home
+    next({ name: "Home" });
   } else {
     next();
   }
