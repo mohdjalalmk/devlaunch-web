@@ -27,14 +27,19 @@
           :key="video.key"
           class="video-item"
         >
-          <span @click="playVideo(video)">{{ video.title }}</span>
-          <input
-            type="checkbox"
-            :checked="completedVideoKeys.includes(video.key)"
-            @change="toggleCompleted(video)"
-            :disabled="!enrolled"
-          />
-          <span v-if="!enrolled" class="locked">🔒</span>
+          <div class="video-left" @click="playVideo(video)">
+            <span class="play-icon">▶️</span>
+            <span class="video-title-text">{{ video.title }}</span>
+          </div>
+          <div class="video-right">
+            <input
+              type="checkbox"
+              :checked="completedVideoKeys.includes(video.key)"
+              @change="toggleCompleted(video)"
+              :disabled="!enrolled"
+            />
+            <span v-if="!enrolled" class="locked">🔒</span>
+          </div>
         </div>
 
         <!-- Enroll button if not enrolled -->
@@ -57,7 +62,7 @@ import {
   getMyEnrolledCourses,
   getSignedVideoUrl,
   updateCourseProgress,
-getCourseProgress 
+  getCourseProgress,
 } from "../api/course";
 import { useAuthStore } from "../store/authStore";
 
@@ -84,8 +89,11 @@ onMounted(async () => {
 
     if (enrolled.value) {
       const progressData = await getCourseProgress(route.params.id);
+      const completedVideos = progressData.completedVideos.map(
+        (item) => item.key
+      );
       progress.value = progressData.progress || 0;
-      completedVideoKeys.value = progressData.completedVideos || [];
+      completedVideoKeys.value = completedVideos || [];
     }
   } catch (error) {
     console.error(error);
@@ -98,7 +106,6 @@ onMounted(async () => {
     }
   }
 });
-
 
 const playVideo = async (video) => {
   if (!enrolled.value) return;
@@ -125,17 +132,20 @@ const enroll = async () => {
 const toggleCompleted = async (video) => {
   if (!enrolled.value) return;
 
+  try {
+    const response = await updateCourseProgress(route.params.id, video.key);
+    console.log("response:", response);
+    const completedVideos = response.data.completedVideos.map(
+      (item) => item.key
+    );
+    console.log("complted videos:", completedVideos);
 
- try {
-  const response = await updateCourseProgress(route.params.id, video.key);  
-  progress.value = response.data.progress;
-  completedVideoKeys.value = response.data.completedVideos || [];
-} catch (error) {
-  console.error(error);
-}
-
+    progress.value = response.data.progress;
+    completedVideoKeys.value = completedVideos || [];
+  } catch (error) {
+    console.error(error);
+  }
 };
-
 </script>
 
 <style scoped>
@@ -174,7 +184,8 @@ const toggleCompleted = async (video) => {
 
 .thumbnail {
   width: 100%;
-  height: auto;
+  aspect-ratio: 16/9;    /* modern browsers support this */
+  object-fit: cover;
   border-radius: 6px;
 }
 
@@ -194,6 +205,27 @@ const toggleCompleted = async (video) => {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.video-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.play-icon {
+  font-size: 16px;
+}
+
+.video-title-text {
+  color: #f0f0f0;
+}
+
+.video-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 
 .locked {
   color: #888;
@@ -226,5 +258,4 @@ const toggleCompleted = async (video) => {
   font-size: 12px;
   color: #ccc;
 }
-
 </style>
