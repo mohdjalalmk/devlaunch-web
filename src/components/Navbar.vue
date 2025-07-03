@@ -1,16 +1,24 @@
 <template>
   <nav class="navbar">
-    <h1>DevLaunch</h1>
-    <div class="user-menu" @click="toggleDropdown">
-      <div class="user-badge">{{ userInitial }}</div>
-      <div v-if="showDropdown" class="dropdown">
-        <button @click.stop="logout">Logout</button>
+    <div class="logo-container">
+      <div class="logo">DevLaunch</div>
+    </div>
+
+    <div class="dropdown" @click="toggleDropdown">
+      <div class="avatar">{{ userInitial }}</div>
+      <div v-if="showDropdown" class="dropdown-menu">
+        <p class="dropdown-header">Hello, {{ auth.user?.name || 'User' }}</p>
+        <hr class="dropdown-divider" />
+        <button class="dropdown-item logout" @click.stop="logout">
+          <LogOut class="icon" /> Logout
+        </button>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
+import { LogOut } from 'lucide-vue-next';
 import { useAuthStore } from "../store/authStore";
 import { logoutUser } from "../api/auth";
 import { useRouter } from "vue-router";
@@ -18,7 +26,6 @@ import { ref, computed } from "vue";
 
 const auth = useAuthStore();
 const router = useRouter();
-
 const showDropdown = ref(false);
 
 const toggleDropdown = () => {
@@ -27,7 +34,7 @@ const toggleDropdown = () => {
 
 const logout = async () => {
   try {
-    await logoutUser(); // optional: call backend logout if exists
+    await logoutUser();
     auth.logout();
     router.push("/");
   } catch (error) {
@@ -36,61 +43,106 @@ const logout = async () => {
 };
 
 const userInitial = computed(() => {
-  if (auth.user && auth.user.email) {
-    return auth.user.email.charAt(0).toUpperCase();
-  }
-  return "?";
+  return auth.user?.name?.charAt(0).toUpperCase() || "?";
 });
 </script>
 
 <style scoped>
 .navbar {
-  background-color: #1c1f21;
+  background:#1e2a38;
+  color: white;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  color: #f0f0f0;
+  align-items: center;   /* this centers vertically */
+  padding: 12px 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.user-menu {
-  position: relative;
+.logo-container {
+  display: flex;
+  align-items: center;   /* ensures vertical centering */
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 12px;
   cursor: pointer;
 }
 
-.user-badge {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #42b983;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  background-color: #3b82f6;   /* themed blue */
   color: white;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
   font-weight: bold;
 }
 
-.dropdown {
+.dropdown-menu {
   position: absolute;
   right: 0;
-  top: 42px;
-  background-color: #3a3a3a;
-  border: 1px solid #555;
-  border-radius: 4px;
-  overflow: hidden;
+  top: 46px;
+  background: #2d3e50;
+  color: #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  min-width: 160px;
+  z-index: 10;
 }
 
-.dropdown button {
+.dropdown-header {
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #aaa;
+}
+
+.dropdown-divider {
+  margin: 0;
+  border: none;
+  height: 1px;
+  background: #444;
+}
+
+.dropdown-item {
+  width: 100%;
   background: none;
   border: none;
   color: #f0f0f0;
-  padding: 8px 16px;
+  padding: 10px 12px;
   text-align: left;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.dropdown button:hover {
-  background-color: #555;
+.dropdown-item:hover {
+  background: #3b4c5c;
+}
+
+.logout {
+  color: #f87171;
+}
+
+.logout:hover {
+  color: #f43f5e;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
 }
 </style>
+

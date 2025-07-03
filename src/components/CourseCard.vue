@@ -3,7 +3,10 @@
     <img :src="course.thumbnail" alt="Course thumbnail" class="thumbnail" />
     <h4>{{ course.title }}</h4>
     <p class="author">Course by {{ course.creator.name }}</p>
-    <span v-if="enrolled" class="badge">Enrolled</span>
+    <div class="bottom-row">
+      <span v-if="enrolled" class="badge">Enrolled</span>
+      <span v-else class="price">₹{{ course.price }}</span>
+    </div>
   </div>
 </template>
 
@@ -21,7 +24,6 @@ defineProps(['course', 'enrolled'])
   width: 200px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .thumbnail {
@@ -45,12 +47,24 @@ h4 {
   text-align: center;
 }
 
+.bottom-row {
+  display: flex;
+  justify-content: flex-end; 
+  margin-top: auto;           
+}
+
 .badge {
   background: #3fc488;
   color: white;
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 12px;
+}
+
+.price {
+  color: #3fc488;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 </style>

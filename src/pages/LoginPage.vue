@@ -13,7 +13,7 @@ import LoginForm from '../components/LoginForm.vue'
 .login-page {
   max-width: 400px;
   margin: 100px auto;
-  background-color: #67809e;
+  background-color: #303641;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.6);

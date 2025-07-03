@@ -12,9 +12,9 @@ import Navbar from '../components/Navbar.vue'
 </script>
 <style scoped>
 div {
-  background-color: #343738; /* dark background */
-  color: #f0f0f0;           /* light text */
-  min-height: 100vh;        /* cover whole viewport height */
+  background-color:#303641;
+  color: #f0f0f0;           
+  min-height: 100vh;        
 }
 
 main {

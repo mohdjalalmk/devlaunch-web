@@ -10,5 +10,7 @@
 /* optional global styles */
 body {
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
 }
 </style>
