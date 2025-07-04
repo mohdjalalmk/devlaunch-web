@@ -11,6 +11,19 @@
           <p class="video-description">
             {{ selectedVideo.description || "No description available." }}
           </p>
+          <div v-if="enrolled" class="certificate-section">
+            <button
+              class="certificate-btn"
+              :disabled="progress < 100"
+              @click="downloadCertificate"
+            >
+              {{
+                progress < 100
+                  ? "Complete course to unlock certificate"
+                  : "Download Certificate"
+              }} 🎓
+            </button>
+          </div>
         </div>
       </div>
 
@@ -64,7 +77,9 @@ import {
   updateCourseProgress,
   getCourseProgress,
 } from "../api/course";
+import {getCourseCertificate} from "../api/certificate"
 import { useAuthStore } from "../store/authStore";
+import axios from "axios";
 
 const route = useRoute();
 const auth = useAuthStore();
@@ -75,6 +90,7 @@ const selectedVideo = ref(null); // currently playing video
 const signedVideoUrl = ref(null); // signed URL for selected video
 const progress = ref(0); // course progress in %
 const completedVideoKeys = ref([]); // which videos are completed
+const certificateUrl = ref("");
 
 onMounted(async () => {
   const data = await getCourseById(route.params.id);
@@ -146,6 +162,22 @@ const toggleCompleted = async (video) => {
     console.error(error);
   }
 };
+
+
+const downloadCertificate = async () => {
+  try {
+    const res = await getCourseCertificate(route.params.id);
+    console.log("response:",res);
+    
+    certificateUrl.value = res.certificateUrl;
+
+    // Open in new tab or trigger download
+    window.open(certificateUrl.value, '_blank');
+  } catch (error) {
+    console.error('Failed to generate certificate:', error);
+  }
+};
+
 </script>
 
 <style scoped>
@@ -184,7 +216,7 @@ const toggleCompleted = async (video) => {
 
 .thumbnail {
   width: 100%;
-  aspect-ratio: 16/9;    /* modern browsers support this */
+  aspect-ratio: 16/9; /* modern browsers support this */
   object-fit: cover;
   border-radius: 6px;
 }
@@ -226,7 +258,6 @@ const toggleCompleted = async (video) => {
   gap: 4px;
 }
 
-
 .locked {
   color: #888;
 }
@@ -258,4 +289,23 @@ const toggleCompleted = async (video) => {
   font-size: 12px;
   color: #ccc;
 }
+.certificate-section {
+  margin-top: 16px;
+}
+
+.certificate-btn {
+  padding: 8px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+}
+
+.certificate-btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
 </style>
