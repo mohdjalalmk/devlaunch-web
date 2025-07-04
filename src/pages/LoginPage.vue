@@ -1,13 +1,19 @@
 <template>
   <v-app>
     <v-main
-      class="d-flex align-center justify-center"
+      class="d-flex flex-column align-center justify-center"
       style="
         background-color: #1e1e2f;
         min-height: 100vh;
         font-family: 'Poppins', sans-serif;
       "
     >
+      <img
+        src="../assets/devlaunch-2.png"
+        alt="DevLaunch Logo"
+        class="logo mb-4"
+      />
+
       <v-card
         class="pa-6 rounded-lg login-card"
         max-width="500"
@@ -130,10 +136,15 @@ const navigateToSignup = () => {
   font-family: "Inter", sans-serif;
 }
 .small-input .v-field__input {
-  font-size: 13px; /* smaller text */
+  font-size: 13px; 
 }
 
 .small-input input::placeholder {
-  font-size: 12px; /* smaller placeholder */
+  font-size: 12px; 
 }
+.logo {
+  width: 240px;      
+  object-fit: contain;
+}
+
 </style>

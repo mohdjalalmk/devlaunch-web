@@ -1,13 +1,18 @@
 <template>
   <v-app>
     <v-main
-      class="d-flex align-center justify-center"
+      class="d-flex flex-column align-center justify-center"
       style="
         background-color: #1e1e2f;
         min-height: 100vh;
         font-family: 'Poppins', sans-serif;
       "
     >
+     <img
+        src="../assets/devlaunch-2.png"
+        alt="DevLaunch Logo"
+        class="logo mb-4"
+      />
       <v-card
         class="pa-6 rounded-lg signup-card"
         max-width="500"
@@ -141,4 +146,9 @@ const handleSignup = async () => {
   width: 100%;
   font-family: "Inter", sans-serif;
 }
+.logo {
+  width: 240px;      
+  object-fit: contain;
+}
+
 </style>
