@@ -6,6 +6,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { useAuthStore } from './store/authStore'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -20,8 +21,7 @@ app.use(pinia)
 app.use(vuetify)
 
 // load user before app starts
-import { useAuthStore } from './store/authStore'
 const auth = useAuthStore()
-auth.loadUserFromStorage()
+auth?.loadUserFromStorage()
 
 app.mount('#app')
