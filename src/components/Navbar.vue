@@ -88,7 +88,7 @@ const userInitial = computed(() => {
 .avatar {
   width: 38px;
   height: 38px;
-  background-color: #3b82f6;   
+  background-color: #037067;   
   color: white;
   border-radius: 50%;
   display: grid;
