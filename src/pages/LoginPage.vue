@@ -1,11 +1,12 @@
 <template>
   <v-app>
     <v-main
-      class="d-flex flex-column align-center justify-center"
+      class="d-flex flex-column align-center"
       style="
         background-color: #1e1e2f;
         min-height: 100vh;
         font-family: 'Poppins', sans-serif;
+        padding-top: 60px; /* space for logo on top */
       "
     >
       <img
@@ -124,10 +125,6 @@ const handleLogin = async () => {
     auth.setLoading(false);
   }
 };
-
-const navigateToSignup = () => {
-  router.push("/signup");
-};
 </script>
 
 <style scoped>
@@ -138,13 +135,11 @@ const navigateToSignup = () => {
 .small-input .v-field__input {
   font-size: 13px; 
 }
-
 .small-input input::placeholder {
   font-size: 12px; 
 }
 .logo {
-  width: 240px;      
+  width: 240px;
   object-fit: contain;
 }
-
 </style>

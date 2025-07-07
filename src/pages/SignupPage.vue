@@ -8,11 +8,11 @@
         font-family: 'Poppins', sans-serif;
       "
     >
-     <img
+     <!-- <img
         src="../assets/devlaunch-2.png"
         alt="DevLaunch Logo"
         class="logo mb-4"
-      />
+      /> -->
       <v-card
         class="pa-6 rounded-lg signup-card"
         max-width="500"
@@ -102,6 +102,8 @@
           </div>
         </v-form>
       </v-card>
+            <CourseCarousel />
+
       <v-dialog v-model="showOtpModal" max-width="400">
         <v-card>
           <v-card-title class="text-center"> Verify OTP </v-card-title>
@@ -142,6 +144,7 @@ import { useAuthStore } from "../store/authStore";
 import { signupUser, verifyOtp } from "../api/auth";
 import validator from "validator";
 import { toast } from "vue3-toastify";
+import CourseCarousel from "../components/CourseCarousel.vue";
 
 const name = ref("");
 const email = ref("");
@@ -253,6 +256,7 @@ const handleVerifyOtp = async () => {
 .signup-card {
   width: 100%;
   font-family: "Inter", sans-serif;
+  margin-bottom: 50px;
 }
 .otp-box {
   width: 40px;
