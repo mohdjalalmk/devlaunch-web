@@ -86,10 +86,10 @@ const auth = useAuthStore();
 
 const course = ref(null);
 const enrolled = ref(false);
-const selectedVideo = ref(null); // currently playing video
-const signedVideoUrl = ref(null); // signed URL for selected video
-const progress = ref(0); // course progress in %
-const completedVideoKeys = ref([]); // which videos are completed
+const selectedVideo = ref(null);
+const signedVideoUrl = ref(null); 
+const progress = ref(0); 
+const completedVideoKeys = ref([]); 
 const certificateUrl = ref("");
 
 onMounted(async () => {
@@ -112,7 +112,6 @@ onMounted(async () => {
       completedVideoKeys.value = completedVideos || [];
     }
   } catch (error) {
-    console.error(error);
   }
 
   if (course.value?.videos?.length > 0) {
@@ -127,12 +126,10 @@ const playVideo = async (video) => {
   if (!enrolled.value) return;
   try {
     const data = await getSignedVideoUrl(course.value._id, video.key);
-    console.log("video:", data);
 
     signedVideoUrl.value = data.url;
     selectedVideo.value = video;
   } catch (error) {
-    console.error(error);
   }
 };
 
@@ -141,7 +138,6 @@ const enroll = async () => {
     await enrollInCourse(route.params.id);
     enrolled.value = true;
   } catch (error) {
-    console.error(error);
   }
 };
 
@@ -150,16 +146,12 @@ const toggleCompleted = async (video) => {
 
   try {
     const response = await updateCourseProgress(route.params.id, video.key);
-    console.log("response:", response);
     const completedVideos = response.data.completedVideos.map(
       (item) => item.key
     );
-    console.log("complted videos:", completedVideos);
-
     progress.value = response.data.progress;
     completedVideoKeys.value = completedVideos || [];
   } catch (error) {
-    console.error(error);
   }
 };
 
@@ -167,14 +159,11 @@ const toggleCompleted = async (video) => {
 const downloadCertificate = async () => {
   try {
     const res = await getCourseCertificate(route.params.id);
-    console.log("response:",res);
     
     certificateUrl.value = res.certificateUrl;
 
-    // Open in new tab or trigger download
     window.open(certificateUrl.value, '_blank');
   } catch (error) {
-    console.error('Failed to generate certificate:', error);
   }
 };
 
@@ -216,7 +205,7 @@ const downloadCertificate = async () => {
 
 .thumbnail {
   width: 100%;
-  aspect-ratio: 16/9; /* modern browsers support this */
+  aspect-ratio: 16/9;
   object-fit: cover;
   border-radius: 6px;
 }
