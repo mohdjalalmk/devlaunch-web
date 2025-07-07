@@ -6,7 +6,7 @@
         background-color: #1e1e2f;
         min-height: 100vh;
         font-family: 'Poppins', sans-serif;
-        padding-top: 60px; /* space for logo on top */
+        padding-top: 60px; 
       "
     >
       <img

@@ -163,7 +163,7 @@ const otpDigits = ref(["", "", "", "", "", ""]);
 
 // Move focus to next input when typing
 const focusNext = (index, event) => {
-  if (event.inputType === "deleteContentBackward") return; // skip on delete
+  if (event.inputType === "deleteContentBackward") return; 
   if (otpDigits.value[index] && index < otpDigits.value.length - 1) {
     const next = document.querySelectorAll(".otp-box input")[index + 1];
     next && next.focus();
@@ -219,7 +219,6 @@ const handleSignup = async () => {
     await signupUser(name.value, email.value, password.value);
     showOtpModal.value = true;
   } catch (err) {
-    console.log("error:", err?.response?.data?.message);
     auth.setError(err?.response?.data?.message || "Signup failed");
     toast.error(err?.response?.data?.message || "Signup failed");
   } finally {
@@ -242,7 +241,6 @@ const handleVerifyOtp = async () => {
     showOtpModal.value = false;
     router.push("/home");
   } catch (err) {
-    console.log("error:", err?.response?.data?.message);
     const message = err?.response?.data?.message || "Invalid OTP";
     auth.setError(message);
     toast.error(message);

@@ -52,7 +52,6 @@ const fetchCourses = async () => {
     const courses = await getAllCourses({ search: search.value, page: page.value, limit: limit.value });
     categories.value = groupByCategory(courses.courses);
   } catch (error) {
-    console.error(error);
   }
 };
 
@@ -63,14 +62,12 @@ onMounted(async () => {
     const enrolled = await getMyEnrolledCourses();
     enrolledCourseIds.value = enrolled?.enrolledCourses.map((c) => c.courseId._id);
   } catch (error) {
-    console.error(error);
   }
 });
 
 // Debounced version of fetchCourses
 const debouncedFetchCourses = debounce(fetchCourses, 400);
 
-// Watch search changes → call debouncedFetchCourses
 watch(search, () => {
   debouncedFetchCourses();
 });
@@ -96,9 +93,9 @@ function groupByCategory(courses) {
 <style scoped>
 .page-head {
   display: flex;
-  justify-content: space-between; /* space between heading & input */
-  align-items: center;           /* vertically center them */
-  margin-bottom: 16px;           /* space below the header row */
+  justify-content: space-between; 
+  align-items: center;           
+  margin-bottom: 16px;        
 }
 
 .course-list {

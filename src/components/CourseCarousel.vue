@@ -63,7 +63,7 @@ const duplicatedCourses = [...courses, ...courses];
 }
 
 .course-card .v-card {
-  background: linear-gradient(135deg, #2503a1, #037067); /* adjust colors to your brand */
+  background: linear-gradient(135deg, #2503a1, #037067); 
   color: white;
   border-radius: 12px;
   overflow: hidden;
@@ -75,7 +75,7 @@ const duplicatedCourses = [...courses, ...courses];
 }
 
 .course-card .v-img {
-  opacity: 0.9; /* optional: adjust image visibility over gradient */
+  opacity: 0.9; 
 }
 
 

@@ -45,11 +45,9 @@ const router = useRouter();
 onMounted(async () => {
   try {
     const data = await getMyEnrolledCourses();
-    console.log("data:", data);
 
     courses.value = data.enrolledCourses;
   } catch (error) {
-    console.error(error);
   }
 });
 

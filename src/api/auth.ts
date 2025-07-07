@@ -10,9 +10,9 @@ export async function logoutUser() {
   return res.data;
 }
 
-export const signupUser = (name, email, password) =>
+export const signupUser = (name: string, email: string, password: string) =>
   api.post("/auth/send-otp", { name, email, password });
 
-export const verifyOtp = (email, otp) =>
+export const verifyOtp = (email: string, otp: string) =>
   api.post("/auth/signup/verify-otp", { email, otp });
 

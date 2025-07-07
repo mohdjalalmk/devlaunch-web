@@ -1,17 +1,36 @@
 import { defineStore } from 'pinia'
 
+export interface User {
+  _id: string
+  name: string
+  email: string
+  role: 'user'
+  enrolledCourses: Array<{
+    courseId: string
+    progress: number
+    completedVideos: { key: string }[]
+    certificate?: string
+  }>
+}
+
+interface AuthState {
+  user: User | null
+  token: string | null
+  loading: boolean
+  error: string | null
+}
+
 export const useAuthStore = defineStore('auth', {
-  state: () => ({
+  state: (): AuthState => ({
     user: null,
     token: null,
     loading: false,
     error: null,
   }),
   actions: {
-    setUser(data) {
+    setUser(data: { user: User; token: string }) {
       this.user = data.user
       this.token = data.token
-      // store in localStorage
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
     },
@@ -20,7 +39,7 @@ export const useAuthStore = defineStore('auth', {
       const user = localStorage.getItem('user')
       if (token && user) {
         this.token = token
-        this.user = JSON.parse(user)
+        this.user = JSON.parse(user) as User
       }
     },
     logout() {
@@ -29,12 +48,11 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
     },
-    setLoading(status:boolean) {
+    setLoading(status: boolean) {
       this.loading = status
     },
-    setError(message) {
+    setError(message: string | null) {
       this.error = message
-    }
+    },
   }
 })
-

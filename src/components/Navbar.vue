@@ -42,7 +42,6 @@ const logout = async () => {
     auth.logout();
     router.push("/");
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -61,14 +60,14 @@ const userInitial = computed(() => {
   color: white;
   display: flex;
   justify-content: space-between;
-  align-items: center;   /* this centers vertically */
+  align-items: center;   
   padding: 12px 24px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .logo-container {
   display: flex;
-  align-items: center;   /* ensures vertical centering */
+  align-items: center;  
 }
 
 .logo {
