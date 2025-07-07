@@ -10,8 +10,9 @@ export async function logoutUser() {
   return res.data;
 }
 
-export const signupUser = async (name:string, email:string, password:string) => {
-  const response = await api.post("/auth/signup", { name, email, password });
-  return response.data;
-};
+export const signupUser = (name, email, password) =>
+  api.post("/auth/send-otp", { name, email, password });
+
+export const verifyOtp = (email, otp) =>
+  api.post("/auth/signup/verify-otp", { email, otp });
 
