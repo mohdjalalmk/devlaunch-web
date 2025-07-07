@@ -29,8 +29,6 @@ import angular from '../../assets/angular.png';
 import next from '../../assets/next.png';
 import node from '../../assets/nodejs.png';
 
-
-
 const courses = [
   { title: "Vue Mastery", image: vueImg },
   { title: "React Native", image:reactImg},

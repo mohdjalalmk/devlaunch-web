@@ -21,7 +21,8 @@
                 progress < 100
                   ? "Complete course to unlock certificate"
                   : "Download Certificate"
-              }} 🎓
+              }}
+              🎓
             </button>
           </div>
         </div>
@@ -60,6 +61,22 @@
           Enroll to watch
         </button>
       </div>
+      <!-- Enroll modal -->
+      <div v-if="showEnrollModal" class="modal-overlay">
+        <div class="modal-card">
+          <h2 class="modal-title">Enroll in "{{ course?.title }}"</h2>
+          <p class="modal-text">
+            This course costs <strong>₹{{ course?.price }}</strong
+            >. Do you want to continue?
+          </p>
+          <div class="modal-actions">
+            <button @click="enrollNow" class="pay-btn">Pay & Enroll</button>
+            <button @click="showEnrollModal = false" class="cancel-btn">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </DefaultLayout>
 </template>
@@ -77,7 +94,7 @@ import {
   updateCourseProgress,
   getCourseProgress,
 } from "../api/course";
-import {getCourseCertificate} from "../api/certificate"
+import { getCourseCertificate } from "../api/certificate";
 import { useAuthStore } from "../store/authStore";
 import axios from "axios";
 
@@ -87,10 +104,11 @@ const auth = useAuthStore();
 const course = ref(null);
 const enrolled = ref(false);
 const selectedVideo = ref(null);
-const signedVideoUrl = ref(null); 
-const progress = ref(0); 
-const completedVideoKeys = ref([]); 
+const signedVideoUrl = ref(null);
+const progress = ref(0);
+const completedVideoKeys = ref([]);
 const certificateUrl = ref("");
+const showEnrollModal = ref(false);
 
 onMounted(async () => {
   const data = await getCourseById(route.params.id);
@@ -111,8 +129,7 @@ onMounted(async () => {
       progress.value = progressData.progress || 0;
       completedVideoKeys.value = completedVideos || [];
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 
   if (course.value?.videos?.length > 0) {
     selectedVideo.value = course.value.videos[0];
@@ -129,15 +146,26 @@ const playVideo = async (video) => {
 
     signedVideoUrl.value = data.url;
     selectedVideo.value = video;
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 const enroll = async () => {
+  if (course.value?.price > 0) {
+    showEnrollModal.value = true;
+  } else {
+    // Free course: enroll directly
+    await enrollNow();
+  }
+};
+
+const enrollNow = async () => {
+  //TODO: Payment gateway integration
   try {
     await enrollInCourse(route.params.id);
     enrolled.value = true;
+    showEnrollModal.value = false;
   } catch (error) {
+    console.error(error);
   }
 };
 
@@ -151,22 +179,18 @@ const toggleCompleted = async (video) => {
     );
     progress.value = response.data.progress;
     completedVideoKeys.value = completedVideos || [];
-  } catch (error) {
-  }
+  } catch (error) {}
 };
-
 
 const downloadCertificate = async () => {
   try {
     const res = await getCourseCertificate(route.params.id);
-    
+
     certificateUrl.value = res.certificateUrl;
 
-    window.open(certificateUrl.value, '_blank');
-  } catch (error) {
-  }
+    window.open(certificateUrl.value, "_blank");
+  } catch (error) {}
 };
-
 </script>
 
 <style scoped>
@@ -295,6 +319,78 @@ const downloadCertificate = async () => {
 .certificate-btn:disabled {
   background: #555;
   cursor: not-allowed;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 30, 47, 0.2); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(4px); 
+}
+
+.modal-card {
+  background: #2c2c3f;
+  color: #f0f0f0;
+  padding: 32px 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.modal-title {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.modal-text {
+  font-size: 14px;
+  margin-bottom: 24px;
+  color: #ccc;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.pay-btn {
+  padding: 8px 16px;
+  background: #3fc488;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.pay-btn:hover {
+  background: #36b178;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  background: #555;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #444;
 }
 
 </style>
