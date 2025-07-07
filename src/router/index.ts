@@ -41,7 +41,7 @@ const router = createRouter({
 });
 
 // Global navigation guard
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const auth = useAuthStore();
 
   if (!auth.token && to.name !== "Login" && to.name !== "Signup") {
