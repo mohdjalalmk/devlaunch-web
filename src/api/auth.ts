@@ -16,3 +16,6 @@ export const signupUser = (name: string, email: string, password: string) =>
 export const verifyOtp = (email: string, otp: string) =>
   api.post("/auth/signup/verify-otp", { email, otp });
 
+export const deleteAccountAPI = async () => {
+  await api.delete(`/auth/delete`);
+};

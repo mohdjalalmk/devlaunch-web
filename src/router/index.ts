@@ -4,7 +4,7 @@ import SignupPage from "../pages/SignupPage.vue";
 import HomePage from "../pages/HomePage.vue";
 import CourseDetails from "../pages/CourseDetails.vue";
 import EnrolledCourses from "../pages/EnrolledCourses.vue";
-
+import PrivacyPolicy from "../pages/PrivacyPolicy.vue";
 import { useAuthStore } from "../store/authStore";
 
 const routes = [
@@ -33,6 +33,7 @@ const routes = [
     name: "EnrolledCourses",
     component: EnrolledCourses,
   },
+  { path: "/privacy-policy",name:"PrivacyPolicy" ,component: PrivacyPolicy },
 ];
 
 const router = createRouter({

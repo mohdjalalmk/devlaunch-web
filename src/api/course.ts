@@ -54,11 +54,12 @@ export async function enrollInCourse(courseId: string): Promise<{ message: strin
   return response.data;
 }
 
-// Get enrolled courses
 export async function getMyEnrolledCourses(): Promise<{ enrolledCourses: EnrolledCourse[] }> {
   const response = await api.get<{ enrolledCourses: EnrolledCourse[] }>(`/user/me/courses`);
   return response.data;
 }
+// Get enrolled courses
+
 
 // Get signed video URL
 export async function getSignedVideoUrl(courseId: string, key: string): Promise<{ signedUrl: string }> {
